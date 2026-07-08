@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Panel — Cohen Autos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<style>
+  :root { --paper:#FFFFFF; --alt:#F5F6F4; --ink:#1B2B22; --green:#2C6349; --greenDark:#1E4832; --line:#E3E1D8; --mute:#6B7268; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--alt); color:var(--ink); font-family:'Work Sans',system-ui,sans-serif; }
+  .panel { padding:24px 28px 60px; display:grid; gap:22px; max-width:900px; margin:0 auto; }
+  .panel-top { display:flex; justify-content:space-between; align-items:center; padding-top:8px; }
+  .panel-top h1 { font-family:'Anton',sans-serif; font-size:26px; letter-spacing:0.5px; color:var(--greenDark); margin:0; }
+  .panel-top a { color:var(--green); font-size:13px; text-decoration:none; font-weight:600; }
+  .settings, .form { background:#fff; border:1px solid var(--line); border-radius:14px; padding:24px; }
+  .settings h2, .form h2 { margin-top:0; font-size:16px; }
+  .settings-row { display:flex; gap:10px; }
+  .settings-row input { flex:1; }
+  .row { display:flex; gap:14px; }
+  .f { flex:1; margin-bottom:14px; }
+  .f.small { flex:0.5; }
+  .f label { display:block; font-size:12px; color:var(--mute); margin-bottom:6px; }
+  .f input, .f select, .f textarea { width:100%; padding:9px 10px; border-radius:8px; border:1px solid var(--line); background:var(--alt); color:var(--ink); font-size:14px; }
+  .thumbs-grid { display:flex; flex-wrap:wrap; gap:10px; }
+  .thumb-item { width:80px; height:64px; border-radius:8px; background-size:cover; background-position:center; position:relative; border:1px solid var(--line); }
+  .thumb-item .remove { position:absolute; top:-6px; right:-6px; width:20px; height:20px; border-radius:50%; background:var(--ink); color:#fff; border:none; cursor:pointer; font-size:13px; line-height:1; }
+  .add-photo { width:80px; height:64px; border-radius:8px; border:1.5px dashed var(--line); display:flex; align-items:center; justify-content:center; font-size:12px; color:var(--mute); cursor:pointer; text-align:center; }
+  .form-actions { display:flex; gap:10px; margin-top:8px; }
+  .btn { background:var(--green); color:#fff; border:none; padding:10px 20px; border-radius:8px; font-weight:600; cursor:pointer; font-size:14px; }
+  .btn.ghost { background:transparent; border:1px solid var(--line); color:var(--ink); }
+  .btn.ghost.danger { color:#B3261E; border-color:#e3c6c3; }
+  .lista h2 { font-size:16px; }
+  .fila { display:flex; justify-content:space-between; align-items:center; padding:12px 16px; background:#fff; border:1px solid var(--line); border-radius:10px; margin-bottom:8px; }
+  .fila-info { display:flex; flex-direction:column; gap:4px; }
+  .fila-info span { color:var(--mute); font-size:12.5px; }
+  .fila-actions { display:flex; gap:8px; }
+  .mute { color:var(--mute); }
+  .login { max-width:340px; margin:80px auto; background:#fff; border:1px solid var(--line); padding:28px; border-radius:14px; text-align:center; }
+  .login p { color:var(--mute); font-size:13px; margin-bottom:16px; }
+  .login input { width:100%; padding:10px; border-radius:8px; border:1px solid var(--line); background:var(--alt); color:var(--ink); margin-bottom:12px; }
+  .err { display:block; color:#B3261E; font-size:12px; margin-top:8px; }
+  @media (max-width:760px) { .row { flex-direction:column; } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef } = React;
+
+// ====== CONFIGURÁ ESTO con los datos de tu proyecto Supabase (los mismos que en /site) ======
+const SUPABASE_URL = "https://qgjagerzvjptuzfimzbr.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnamFnZXJ6dmpwdHV6ZmltemJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM0NjU1MDcsImV4cCI6MjA5OTA0MTUwN30.C0pGuw0e9UNWp3wEMKZFGjDzBQp28rysmFpVLBJelpg";
+// URL de tu página pública, para el link "Ver la página"
+const SITE_URL = "https://tu-pagina.netlify.app";
+// Clave de acceso al panel (cámbiala por la tuya)
+const ADMIN_PASS = "auto2026";
+// ==============================================================================================
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+function fmtMoney(n) { return "US$ " + Number(n).toLocaleString("es-AR"); }
+function fmtKm(n) { return Number(n).toLocaleString("es-AR") + " km"; }
+
+function compressImage(file, maxW = 900, quality = 0.72) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let w = img.width, h = img.height;
+        if (w > maxW) { h = Math.round((h * maxW) / w); w = maxW; }
+        const canvas = document.createElement("canvas");
+        canvas.width = w; canvas.height = h;
+        canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+        canvas.toBlob((blob) => resolve(blob), "image/jpeg", quality);
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function uploadPhoto(blob) {
+  const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.jpg`;
+  const { error } = await sb.storage.from("car-photos").upload(fileName, blob, { contentType: "image/jpeg" });
+  if (error) { console.error(error); return null; }
+  const { data } = sb.storage.from("car-photos").getPublicUrl(fileName);
+  return data.publicUrl;
+}
+
+const empty = { marca: "", modelo: "", anio: new Date().getFullYear(), km: 0, precio: 0, condicion: "usado", transmision: "manual", color: "", fotos: [], descripcion: "" };
+
+function PhotoUploader({ fotos, onChange }) {
+  const [busy, setBusy] = useState(false);
+  const inputRef = useRef(null);
+  async function handleFiles(e) {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    setBusy(true);
+    const nuevas = [];
+    for (const f of files) {
+      try {
+        const blob = await compressImage(f);
+        const url = await uploadPhoto(blob);
+        if (url) nuevas.push(url);
+      } catch (err) { console.error(err); }
+    }
+    onChange([...fotos, ...nuevas]);
+    setBusy(false);
+    if (inputRef.current) inputRef.current.value = "";
+  }
+  return (
+    <div className="thumbs-grid">
+      {fotos.map((f, i) => (
+        <div className="thumb-item" key={i} style={{ backgroundImage: `url(${f})` }}>
+          <button type="button" className="remove" onClick={() => onChange(fotos.filter((_, idx) => idx !== i))}>×</button>
+        </div>
+      ))}
+      <label className="add-photo">
+        {busy ? "Subiendo..." : "+ Foto"}
+        <input ref={inputRef} type="file" accept="image/*" multiple onChange={handleFiles} hidden />
+      </label>
+    </div>
+  );
+}
+
+function App() {
+  const [auth, setAuth] = useState(false);
+  const [pass, setPass] = useState("");
+  const [cars, setCars] = useState([]);
+  const [whatsapp, setWhatsapp] = useState("");
+  const [phoneInput, setPhoneInput] = useState("");
+  const [form, setForm] = useState(empty);
+  const [editId, setEditId] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  async function loadAll() {
+    const { data: carsData } = await sb.from("cars").select("*").order("created_at", { ascending: false });
+    const { data: settingsData } = await sb.from("settings").select("whatsapp").eq("id", 1).single();
+    setCars(carsData || []);
+    setWhatsapp((settingsData && settingsData.whatsapp) || "");
+    setPhoneInput((settingsData && settingsData.whatsapp) || "");
+    setLoading(false);
+  }
+  useEffect(() => { if (auth) loadAll(); }, [auth]);
+
+  if (!auth) {
+    return (
+      <div className="login">
+        <h2>Acceso al panel</h2>
+        <p>Ingresá la clave para publicar autos.</p>
+        <input type="password" placeholder="Clave" value={pass} onChange={e => setPass(e.target.value)}
+          onKeyDown={e => e.key === "Enter" && pass === ADMIN_PASS && setAuth(true)} />
+        <button className="btn" onClick={() => pass === ADMIN_PASS && setAuth(true)}>Entrar</button>
+        {pass && pass !== ADMIN_PASS && <span className="err">Clave incorrecta</span>}
+      </div>
+    );
+  }
+  if (loading) return <p style={{ padding: 28, color: "var(--mute)" }}>Cargando...</p>;
+
+  function set(field, val) { setForm(f => ({ ...f, [field]: val })); }
+  function edit(car) { setForm({ ...empty, ...car }); setEditId(car.id); window.scrollTo({ top: 0, behavior: "smooth" }); }
+  function reset() { setForm(empty); setEditId(null); }
+
+  async function submit(e) {
+    e.preventDefault();
+    if (!form.marca || !form.modelo) return;
+    const payload = { ...form };
+    delete payload.id; delete payload.created_at;
+    if (editId) await sb.from("cars").update(payload).eq("id", editId);
+    else await sb.from("cars").insert(payload);
+    reset();
+    loadAll();
+  }
+  async function handleDelete(id) { await sb.from("cars").delete().eq("id", id); loadAll(); }
+  async function saveSettings() { await sb.from("settings").update({ whatsapp: phoneInput.trim() }).eq("id", 1); setWhatsapp(phoneInput.trim()); }
+
+  return (
+    <div className="panel">
+      <div className="panel-top">
+        <h1>Panel Cohen Autos</h1>
+        <a href={SITE_URL} target="_blank" rel="noreferrer">Ver la página →</a>
+      </div>
+
+      <div className="settings">
+        <h2>Configuración</h2>
+        <div className="f">
+          <label>Número de WhatsApp (con código de país, sin + ni espacios. Ej: 5491122334455)</label>
+          <div className="settings-row">
+            <input value={phoneInput} onChange={e => setPhoneInput(e.target.value)} placeholder="5491122334455" />
+            <button className="btn" type="button" onClick={saveSettings}>Guardar</button>
+          </div>
+        </div>
+      </div>
+
+      <form className="form" onSubmit={submit}>
+        <h2>{editId ? "Editar auto" : "Publicar auto"}</h2>
+        <div className="row">
+          <div className="f"><label>Marca</label><input value={form.marca} onChange={e => set("marca", e.target.value)} required /></div>
+          <div className="f"><label>Modelo</label><input value={form.modelo} onChange={e => set("modelo", e.target.value)} required /></div>
+          <div className="f small"><label>Año</label><input type="number" value={form.anio} onChange={e => set("anio", Number(e.target.value))} /></div>
+        </div>
+        <div className="row">
+          <div className="f"><label>Kilómetros</label><input type="number" value={form.km} onChange={e => set("km", Number(e.target.value))} /></div>
+          <div className="f"><label>Precio (USD)</label><input type="number" value={form.precio} onChange={e => set("precio", Number(e.target.value))} /></div>
+          <div className="f"><label>Color</label><input value={form.color} onChange={e => set("color", e.target.value)} /></div>
+        </div>
+        <div className="row">
+          <div className="f"><label>Condición</label>
+            <select value={form.condicion} onChange={e => set("condicion", e.target.value)}>
+              <option value="usado">Usado</option><option value="nuevo">0km</option>
+            </select>
+          </div>
+          <div className="f"><label>Transmisión</label>
+            <select value={form.transmision} onChange={e => set("transmision", e.target.value)}>
+              <option value="manual">Manual</option><option value="automatico">Automático</option>
+            </select>
+          </div>
+        </div>
+        <div className="f"><label>Fotos</label><PhotoUploader fotos={form.fotos} onChange={(f) => set("fotos", f)} /></div>
+        <div className="f"><label>Descripción</label><textarea value={form.descripcion} onChange={e => set("descripcion", e.target.value)} rows={3} /></div>
+        <div className="form-actions">
+          <button className="btn" type="submit">{editId ? "Guardar cambios" : "Publicar"}</button>
+          {editId && <button type="button" className="btn ghost" onClick={reset}>Cancelar edición</button>}
+        </div>
+      </form>
+
+      <div className="lista">
+        <h2>Publicados ({cars.length})</h2>
+        <div className="tabla">
+          {cars.map(c => (
+            <div className="fila" key={c.id}>
+              <div className="fila-info"><strong>{c.marca} {c.modelo}</strong><span>{c.anio} · {fmtKm(c.km)} · {fmtMoney(c.precio)} · {c.condicion === "nuevo" ? "0km" : "usado"}</span></div>
+              <div className="fila-actions">
+                <button className="btn ghost" onClick={() => edit(c)}>Editar</button>
+                <button className="btn ghost danger" onClick={() => handleDelete(c.id)}>Borrar</button>
+              </div>
+            </div>
+          ))}
+          {cars.length === 0 && <p className="mute">Todavía no publicaste ningún auto.</p>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
