@@ -5,62 +5,65 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Cohen Autos — Autos nuevos y usados</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
-    --paper:#FFFFFF; --alt:#F5F6F4; --ink:#1B2B22; --green:#2C6349; --greenDark:#1E4832;
-    --amber:#C98A12; --whats:#22B24C; --line:#E3E1D8; --mute:#6B7268;
+    --paper:#FAF6F0; --surface:#FFFFFF; --ink:#2B2420; --rust:#8C3B2E; --rustDark:#6C2C21;
+    --brass:#B8874A; --brassSoft:#E8CFA0; --whats:#22B24C; --line:#E4DCCB; --mute:#7C7266;
   }
   * { box-sizing:border-box; }
   body { margin:0; background:var(--paper); color:var(--ink); font-family:'Work Sans',system-ui,sans-serif; }
 
-  .navbar { display:flex; align-items:center; justify-content:space-between; padding:16px 28px; border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--paper); z-index:10; }
-  .navbar .logo { font-family:'Anton',sans-serif; font-size:22px; letter-spacing:0.5px; color:var(--greenDark); }
-  .navbar .logo span { color:var(--amber); }
+  .navbar { display:flex; align-items:center; justify-content:space-between; padding:18px 28px; border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--paper); z-index:10; }
+  .navbar .logo { font-family:'Fraunces',serif; font-weight:600; font-size:23px; letter-spacing:0.2px; color:var(--rustDark); }
+  .navbar .logo span { color:var(--brass); }
 
-  .hero { background:var(--green); color:#fff; padding:44px 28px; text-align:center; }
-  .hero h1 { font-family:'Anton',sans-serif; font-size:clamp(30px,5vw,44px); margin:0 0 8px; letter-spacing:0.5px; }
-  .hero p { margin:0; color:#dcE7e0; font-size:15px; }
+  .hero { background:var(--rust); color:#fff; padding:48px 28px; text-align:center; }
+  .hero h1 { font-family:'Fraunces',serif; font-weight:600; font-style:italic; font-size:clamp(28px,5vw,42px); margin:0 0 10px; letter-spacing:0.2px; }
+  .hero p { margin:0; color:#f0ddd0; font-size:15px; }
 
   .catalogo { display:grid; grid-template-columns:260px 1fr; gap:24px; padding:28px; max-width:1200px; margin:0 auto; }
-  .filtros { background:var(--alt); border:1px solid var(--line); border-radius:14px; padding:20px; align-self:start; position:sticky; top:76px; }
-  .filtros h2 { margin:0 0 16px; font-size:15px; font-weight:700; }
+  .filtros { background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:20px; align-self:start; position:sticky; top:80px; }
+  .filtros h2 { margin:0 0 16px; font-size:14px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:var(--rustDark); }
   .f-group { margin-bottom:20px; }
   .f-group label { display:block; font-size:11.5px; color:var(--mute); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.6px; font-weight:600; }
   .chips { display:flex; flex-wrap:wrap; gap:6px; }
-  .chip { background:#fff; border:1px solid var(--line); color:var(--ink); padding:6px 12px; border-radius:20px; font-size:13px; cursor:pointer; }
-  .chip.on { background:var(--green); border-color:var(--green); color:#fff; font-weight:600; }
+  .chip { background:var(--paper); border:1px solid var(--line); color:var(--ink); padding:6px 12px; border-radius:6px; font-size:13px; cursor:pointer; }
+  .chip.on { background:var(--rust); border-color:var(--rust); color:#fff; font-weight:600; }
   .rd-labels { display:flex; justify-content:space-between; font-size:12px; color:var(--mute); margin-bottom:8px; font-family:'Space Mono',monospace; }
   .rd-track { position:relative; height:28px; }
-  .rd-fill { position:absolute; top:12px; height:4px; background:var(--green); border-radius:2px; }
+  .rd-fill { position:absolute; top:12px; height:4px; background:var(--rust); border-radius:2px; }
   .rd-track::before { content:''; position:absolute; top:12px; left:0; right:0; height:4px; background:var(--line); border-radius:2px; }
   .rd-track input[type=range] { position:absolute; top:0; left:0; width:100%; height:28px; background:transparent; -webkit-appearance:none; pointer-events:none; margin:0; }
-  .rd-track input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; pointer-events:auto; width:16px; height:16px; border-radius:50%; background:var(--green); border:2px solid #fff; box-shadow:0 0 0 1px var(--line); cursor:pointer; }
-  .rd-track input[type=range]::-moz-range-thumb { pointer-events:auto; width:16px; height:16px; border-radius:50%; background:var(--green); border:2px solid #fff; cursor:pointer; }
+  .rd-track input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; pointer-events:auto; width:16px; height:16px; border-radius:50%; background:var(--rust); border:2px solid #fff; box-shadow:0 0 0 1px var(--line); cursor:pointer; }
+  .rd-track input[type=range]::-moz-range-thumb { pointer-events:auto; width:16px; height:16px; border-radius:50%; background:var(--rust); border:2px solid #fff; cursor:pointer; }
 
   .grid-head { color:var(--mute); font-size:13px; margin-bottom:14px; }
-  .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:18px; }
-  .card { background:#fff; border:1px solid var(--line); border-radius:14px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 1px 3px rgba(27,43,34,0.05); }
+  .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:20px; }
+  .card { background:var(--surface); border:1px solid var(--line); border-radius:10px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 1px 2px rgba(43,36,32,0.06); transition:box-shadow .15s ease; }
+  .card:hover { box-shadow:0 6px 16px rgba(43,36,32,0.10); }
   .card-photo { height:170px; background-size:cover; background-position:center; position:relative; background-color:var(--line); }
   .no-photo { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:var(--mute); font-size:13px; }
-  .tag { position:absolute; top:10px; left:10px; font-size:11px; font-weight:700; padding:4px 9px; border-radius:6px; letter-spacing:0.5px; }
-  .tag-new { background:var(--amber); color:#fff; }
+  .tag { position:absolute; top:10px; left:10px; font-size:10.5px; font-weight:700; padding:4px 9px; border-radius:4px; letter-spacing:0.6px; }
+  .tag-new { background:var(--brass); color:#fff; }
   .tag-used { background:var(--ink); color:#fff; }
   .thumbs { display:flex; gap:5px; padding:8px 10px 0; }
-  .thumb { width:34px; height:26px; border-radius:5px; border:2px solid transparent; background-size:cover; background-position:center; padding:0; cursor:pointer; }
-  .thumb.on { border-color:var(--green); }
-  .card-body { padding:12px 16px 16px; display:flex; flex-direction:column; gap:6px; }
+  .thumb { width:34px; height:26px; border-radius:4px; border:2px solid transparent; background-size:cover; background-position:center; padding:0; cursor:pointer; }
+  .thumb.on { border-color:var(--rust); }
+  .card-body { padding:14px 16px 16px; display:flex; flex-direction:column; gap:6px; }
   .card-top { display:flex; justify-content:space-between; align-items:baseline; }
-  .card-top h3 { margin:0; font-size:16px; }
+  .card-top h3 { margin:0; font-family:'Fraunces',serif; font-weight:600; font-size:18px; }
   .anio { color:var(--mute); font-size:13px; font-family:'Space Mono',monospace; }
   .card-specs { display:flex; gap:6px; color:var(--mute); font-size:12.5px; flex-wrap:wrap; }
-  .desc { font-size:12.5px; color:#495047; margin:2px 0; line-height:1.4; }
-  .plate { align-self:flex-start; font-family:'Space Mono',monospace; font-weight:700; font-size:16px; background:#fff; border:2px solid var(--ink); border-radius:6px; padding:4px 10px; margin-top:4px; }
-  .btn-whats { display:flex; align-items:center; justify-content:center; gap:8px; background:var(--whats); color:#fff; text-decoration:none; padding:10px; border-radius:8px; font-weight:600; font-size:13.5px; margin-top:6px; }
+  .desc { font-size:12.5px; color:#59504a; margin:2px 0; line-height:1.45; }
+  .price-row { display:flex; align-items:center; justify-content:space-between; margin-top:6px; }
+  .price-tag { position:relative; font-family:'Space Mono',monospace; font-weight:700; font-size:15.5px; background:var(--paper); border:1.5px solid var(--brass); border-radius:4px; padding:5px 12px 5px 18px; color:var(--rustDark); }
+  .price-tag::before { content:''; position:absolute; left:6px; top:50%; transform:translateY(-50%); width:6px; height:6px; border-radius:50%; background:var(--paper); border:1.5px solid var(--brass); }
+  .btn-whats { display:flex; align-items:center; justify-content:center; gap:7px; background:var(--whats); color:#fff; text-decoration:none; padding:9px 14px; border-radius:6px; font-weight:600; font-size:13px; }
   .btn-whats.disabled { background:var(--line); color:var(--mute); cursor:not-allowed; }
   .empty { color:var(--mute); padding:40px 0; text-align:center; }
   .footer { text-align:center; padding:24px; color:var(--mute); font-size:12px; }
@@ -99,7 +102,7 @@ function buildWhatsappUrl(car, phone) {
 
 function WhatsIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1s-.7.8-.8 1c-.2.2-.3.2-.5.1a6.7 6.7 0 0 1-2-1.2 7.4 7.4 0 0 1-1.4-1.7c-.1-.2 0-.4.1-.5l.4-.4a1.6 1.6 0 0 0 .2-.4.4.4 0 0 0 0-.4c-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.6 1.1 2.8s1.7 2.7 4.3 3.7a5 5 0 0 0 3 .2 2.6 2.6 0 0 0 1.7-1.2 2.1 2.1 0 0 0 .1-1.2c-.1-.1-.2-.2-.4-.3z" />
     </svg>
   );
@@ -142,7 +145,9 @@ function CarCard({ car, phone }) {
           <span>{car.color}</span>
         </div>
         {car.descripcion && <p className="desc">{car.descripcion}</p>}
-        <div className="plate">{fmtMoney(car.precio)}</div>
+        <div className="price-row">
+          <div className="price-tag">{fmtMoney(car.precio)}</div>
+        </div>
         <a
           className={"btn-whats" + (hasPhone ? "" : " disabled")}
           href={hasPhone ? buildWhatsappUrl(car, phone.trim()) : undefined}
@@ -185,7 +190,7 @@ function App() {
 
   return (
     <React.Fragment>
-      <div className="navbar"><div className="logo">COHEN <span>AUTOS</span></div></div>
+      <div className="navbar"><div className="logo">Cohen <span>Autos</span></div></div>
       <div className="hero">
         <h1>Encontrá tu próximo auto</h1>
         <p>Autos nuevos y usados, revisados y listos para entregar.</p>
