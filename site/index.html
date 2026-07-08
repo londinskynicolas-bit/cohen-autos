@@ -26,24 +26,27 @@
   .hero h1 { font-family:'Fraunces',serif; font-weight:600; font-style:italic; font-size:clamp(28px,5vw,42px); margin:0 0 10px; letter-spacing:0.2px; }
   .hero p { margin:0; color:#f0ddd0; font-size:15px; }
 
-  .catalogo { display:grid; grid-template-columns:260px 1fr; gap:24px; padding:28px; max-width:1200px; margin:0 auto; }
-  .filtros { background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:20px; align-self:start; position:sticky; top:80px; }
-  .filtros h2 { margin:0 0 16px; font-size:14px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:var(--rustDark); }
-  .f-group { margin-bottom:20px; }
-  .f-group label { display:block; font-size:11.5px; color:var(--mute); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.6px; font-weight:600; }
+  .catalogo { display:grid; grid-template-columns:270px 1fr; gap:24px; padding:28px; max-width:1200px; margin:0 auto; }
+
+  .filtros { align-self:start; position:sticky; top:80px; display:flex; flex-direction:column; gap:14px; }
+  .f-card { background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:16px 18px; }
+  .f-card-head { display:flex; align-items:center; gap:8px; margin:0 0 12px; }
+  .f-dot { width:7px; height:7px; border-radius:50%; background:var(--brass); flex-shrink:0; }
+  .f-card-head h3 { margin:0; font-size:12px; text-transform:uppercase; letter-spacing:0.7px; color:var(--rustDark); font-weight:700; }
   .chips { display:flex; flex-wrap:wrap; gap:6px; }
-  .chip { background:var(--paper); border:1px solid var(--line); color:var(--ink); padding:6px 12px; border-radius:6px; font-size:13px; cursor:pointer; }
+  .chip { background:var(--paper); border:1px solid var(--line); color:var(--ink); padding:6px 11px; border-radius:6px; font-size:12.5px; cursor:pointer; }
   .chip.on { background:var(--rust); border-color:var(--rust); color:#fff; font-weight:600; }
   .rd-labels { display:flex; justify-content:space-between; font-size:12px; color:var(--mute); margin-bottom:8px; font-family:'Space Mono',monospace; }
-  .rd-track { position:relative; height:28px; }
-  .rd-fill { position:absolute; top:12px; height:4px; background:var(--rust); border-radius:2px; }
-  .rd-track::before { content:''; position:absolute; top:12px; left:0; right:0; height:4px; background:var(--line); border-radius:2px; }
-  .rd-track input[type=range] { position:absolute; top:0; left:0; width:100%; height:28px; background:transparent; -webkit-appearance:none; pointer-events:none; margin:0; }
-  .rd-track input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; pointer-events:auto; width:16px; height:16px; border-radius:50%; background:var(--rust); border:2px solid #fff; box-shadow:0 0 0 1px var(--line); cursor:pointer; }
-  .rd-track input[type=range]::-moz-range-thumb { pointer-events:auto; width:16px; height:16px; border-radius:50%; background:var(--rust); border:2px solid #fff; cursor:pointer; }
+  .rd-track { position:relative; height:26px; }
+  .rd-fill { position:absolute; top:11px; height:4px; background:var(--rust); border-radius:2px; }
+  .rd-track::before { content:''; position:absolute; top:11px; left:0; right:0; height:4px; background:var(--line); border-radius:2px; }
+  .rd-track input[type=range] { position:absolute; top:0; left:0; width:100%; height:26px; background:transparent; -webkit-appearance:none; pointer-events:none; margin:0; }
+  .rd-track input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; pointer-events:auto; width:15px; height:15px; border-radius:50%; background:var(--rust); border:2px solid #fff; box-shadow:0 0 0 1px var(--line); cursor:pointer; }
+  .rd-track input[type=range]::-moz-range-thumb { pointer-events:auto; width:15px; height:15px; border-radius:50%; background:var(--rust); border:2px solid #fff; cursor:pointer; }
+  .clear-filters { background:none; border:none; color:var(--mute); font-size:12px; text-decoration:underline; cursor:pointer; padding:0; text-align:left; }
 
   .grid-head { color:var(--mute); font-size:13px; margin-bottom:14px; }
-  .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:20px; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:20px; }
   .card { background:var(--surface); border:1px solid var(--line); border-radius:10px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 1px 2px rgba(43,36,32,0.06); transition:box-shadow .15s ease; }
   .card:hover { box-shadow:0 6px 16px rgba(43,36,32,0.10); }
   .card-photo { height:170px; background-size:cover; background-position:center; position:relative; background-color:var(--line); }
@@ -58,7 +61,9 @@
   .card-top { display:flex; justify-content:space-between; align-items:baseline; }
   .card-top h3 { margin:0; font-family:'Fraunces',serif; font-weight:600; font-size:18px; }
   .anio { color:var(--mute); font-size:13px; font-family:'Space Mono',monospace; }
-  .card-specs { display:flex; gap:6px; color:var(--mute); font-size:12.5px; flex-wrap:wrap; }
+  .version { color:var(--mute); font-size:12.5px; margin-top:-4px; }
+  .specs-grid { display:grid; grid-template-columns:1fr 1fr; gap:4px 10px; font-size:12px; color:var(--mute); margin:4px 0; padding:10px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .specs-grid b { color:var(--ink); font-weight:600; }
   .desc { font-size:12.5px; color:#59504a; margin:2px 0; line-height:1.45; }
   .price-row { display:flex; align-items:center; justify-content:space-between; margin-top:6px; }
   .price-tag { position:relative; font-family:'Space Mono',monospace; font-weight:700; font-size:15.5px; background:var(--paper); border:1.5px solid var(--brass); border-radius:4px; padding:5px 12px 5px 18px; color:var(--rustDark); }
@@ -86,11 +91,14 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 function fmtMoney(n) { return "US$ " + Number(n).toLocaleString("es-AR"); }
 function fmtKm(n) { return Number(n).toLocaleString("es-AR") + " km"; }
 
+const COMBUSTIBLE_LABEL = { nafta: "Nafta", diesel: "Diésel", gnc: "GNC", electrico: "Eléctrico", hibrido: "Híbrido" };
+const CARROCERIA_LABEL = { sedan: "Sedán", hatchback: "Hatchback", suv: "SUV", pickup: "Pick-up", coupe: "Coupé", rural: "Rural", furgon: "Furgón", cabriolet: "Cabriolet" };
+
 function buildWhatsappUrl(car, phone) {
   const lines = [
     "Hola! Vi tu publicación en Cohen Autos y quiero consultar por más detalles:",
     "",
-    `${car.marca} ${car.modelo} ${car.anio}`,
+    `${car.marca} ${car.modelo} ${car.version || ""} ${car.anio}`.replace(/\s+/g, " ").trim(),
     `Km: ${fmtKm(car.km)}`,
     `Transmisión: ${car.transmision === "automatico" ? "Automático" : "Manual"}`,
     `Precio: ${fmtMoney(car.precio)}`,
@@ -122,6 +130,15 @@ function RangeDual({ min, max, value, onChange, step, format }) {
   );
 }
 
+function FilterCard({ title, children }) {
+  return (
+    <div className="f-card">
+      <div className="f-card-head"><span className="f-dot" /><h3>{title}</h3></div>
+      {children}
+    </div>
+  );
+}
+
 function CarCard({ car, phone }) {
   const fotos = car.fotos && car.fotos.length ? car.fotos : [];
   const [active, setActive] = useState(0);
@@ -139,11 +156,19 @@ function CarCard({ car, phone }) {
       )}
       <div className="card-body">
         <div className="card-top"><h3>{car.marca} {car.modelo}</h3><span className="anio">{car.anio}</span></div>
-        <div className="card-specs">
-          <span>{fmtKm(car.km)}</span><span>·</span>
-          <span>{car.transmision === "automatico" ? "Automático" : "Manual"}</span><span>·</span>
+        {car.version && <div className="version">{car.version}</div>}
+
+        <div className="specs-grid">
+          <span><b>{fmtKm(car.km)}</b></span>
+          <span><b>{car.transmision === "automatico" ? "Automático" : "Manual"}</b></span>
+          <span>{COMBUSTIBLE_LABEL[car.combustible] || car.combustible}</span>
+          <span>{CARROCERIA_LABEL[car.carroceria] || car.carroceria}</span>
           <span>{car.color}</span>
+          <span>{car.traccion === "4x4" ? "4x4 / AWD" : "4x2"}</span>
+          {car.motor && <span>Motor {car.motor}</span>}
+          {car.puertas && <span>{car.puertas} puertas</span>}
         </div>
+
         {car.descripcion && <p className="desc">{car.descripcion}</p>}
         <div className="price-row">
           <div className="price-tag">{fmtMoney(car.precio)}</div>
@@ -168,6 +193,8 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [condicion, setCondicion] = useState("todos");
   const [transmision, setTransmision] = useState("todos");
+  const [combustible, setCombustible] = useState("todos");
+  const [carroceria, setCarroceria] = useState("todos");
   const [km, setKm] = useState([0, 350000]);
   const [precio, setPrecio] = useState([0, 50000]);
 
@@ -184,9 +211,21 @@ function App() {
   const filtrados = useMemo(() => cars.filter(c =>
     (condicion === "todos" || c.condicion === condicion) &&
     (transmision === "todos" || c.transmision === transmision) &&
+    (combustible === "todos" || c.combustible === combustible) &&
+    (carroceria === "todos" || c.carroceria === carroceria) &&
     c.km >= km[0] && c.km <= km[1] &&
     c.precio >= precio[0] && c.precio <= precio[1]
-  ), [cars, condicion, transmision, km, precio]);
+  ), [cars, condicion, transmision, combustible, carroceria, km, precio]);
+
+  function clearFilters() {
+    setCondicion("todos"); setTransmision("todos"); setCombustible("todos"); setCarroceria("todos");
+    setKm([0, 350000]); setPrecio([0, 50000]);
+  }
+
+  const carroceriasEnUso = useMemo(() => {
+    const set = new Set(cars.map(c => c.carroceria).filter(Boolean));
+    return Array.from(set);
+  }, [cars]);
 
   return (
     <React.Fragment>
@@ -198,9 +237,7 @@ function App() {
 
       <div className="catalogo">
         <aside className="filtros">
-          <h2>Filtros</h2>
-          <div className="f-group">
-            <label>Condición</label>
+          <FilterCard title="Condición">
             <div className="chips">
               {["todos", "nuevo", "usado"].map(v => (
                 <button key={v} className={condicion === v ? "chip on" : "chip"} onClick={() => setCondicion(v)}>
@@ -208,9 +245,9 @@ function App() {
                 </button>
               ))}
             </div>
-          </div>
-          <div className="f-group">
-            <label>Transmisión</label>
+          </FilterCard>
+
+          <FilterCard title="Transmisión">
             <div className="chips">
               {["todos", "manual", "automatico"].map(v => (
                 <button key={v} className={transmision === v ? "chip on" : "chip"} onClick={() => setTransmision(v)}>
@@ -218,9 +255,37 @@ function App() {
                 </button>
               ))}
             </div>
-          </div>
-          <div className="f-group"><label>Kilómetros</label><RangeDual min={0} max={350000} step={5000} value={km} onChange={setKm} format={fmtKm} /></div>
-          <div className="f-group"><label>Precio</label><RangeDual min={0} max={50000} step={500} value={precio} onChange={setPrecio} format={fmtMoney} /></div>
+          </FilterCard>
+
+          <FilterCard title="Combustible">
+            <div className="chips">
+              <button className={combustible === "todos" ? "chip on" : "chip"} onClick={() => setCombustible("todos")}>Todos</button>
+              {Object.entries(COMBUSTIBLE_LABEL).map(([v, l]) => (
+                <button key={v} className={combustible === v ? "chip on" : "chip"} onClick={() => setCombustible(v)}>{l}</button>
+              ))}
+            </div>
+          </FilterCard>
+
+          {carroceriasEnUso.length > 0 && (
+            <FilterCard title="Carrocería">
+              <div className="chips">
+                <button className={carroceria === "todos" ? "chip on" : "chip"} onClick={() => setCarroceria("todos")}>Todas</button>
+                {carroceriasEnUso.map(v => (
+                  <button key={v} className={carroceria === v ? "chip on" : "chip"} onClick={() => setCarroceria(v)}>{CARROCERIA_LABEL[v] || v}</button>
+                ))}
+              </div>
+            </FilterCard>
+          )}
+
+          <FilterCard title="Kilómetros">
+            <RangeDual min={0} max={350000} step={5000} value={km} onChange={setKm} format={fmtKm} />
+          </FilterCard>
+
+          <FilterCard title="Precio">
+            <RangeDual min={0} max={50000} step={500} value={precio} onChange={setPrecio} format={fmtMoney} />
+          </FilterCard>
+
+          <button className="clear-filters" onClick={clearFilters}>Limpiar todos los filtros</button>
         </aside>
         <section className="grid">
           {loading ? <div className="empty">Cargando autos...</div> : (
