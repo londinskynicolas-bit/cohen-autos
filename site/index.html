@@ -19,7 +19,7 @@
   body { margin:0; background:var(--paper); color:var(--ink); font-family:'Work Sans',system-ui,sans-serif; }
 
   .navbar { display:flex; align-items:center; justify-content:space-between; padding:18px 28px; border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--paper); z-index:10; }
-  .navbar .logo { font-family:'Fraunces',serif; font-weight:600; font-size:23px; letter-spacing:0.2px; color:var(--rustDark); }
+  .navbar .logo { font-family:'Fraunces',serif; font-weight:600; font-size:23px; letter-spacing:0.2px; color:var(--rustDark); text-decoration:none; }
   .navbar .logo span { color:var(--brass); }
 
   .hero { background:var(--rust); color:#fff; padding:48px 28px; text-align:center; }
@@ -47,24 +47,19 @@
 
   .grid-head { color:var(--mute); font-size:13px; margin-bottom:14px; }
   .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:20px; }
-  .card { background:var(--surface); border:1px solid var(--line); border-radius:10px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 1px 2px rgba(43,36,32,0.06); transition:box-shadow .15s ease; }
+  .card { background:var(--surface); border:1px solid var(--line); border-radius:10px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 1px 2px rgba(43,36,32,0.06); transition:box-shadow .15s ease; cursor:pointer; }
   .card:hover { box-shadow:0 6px 16px rgba(43,36,32,0.10); }
   .card-photo { height:170px; background-size:cover; background-position:center; position:relative; background-color:var(--line); }
   .no-photo { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:var(--mute); font-size:13px; }
   .tag { position:absolute; top:10px; left:10px; font-size:10.5px; font-weight:700; padding:4px 9px; border-radius:4px; letter-spacing:0.6px; }
   .tag-new { background:var(--brass); color:#fff; }
   .tag-used { background:var(--ink); color:#fff; }
-  .thumbs { display:flex; gap:5px; padding:8px 10px 0; }
-  .thumb { width:34px; height:26px; border-radius:4px; border:2px solid transparent; background-size:cover; background-position:center; padding:0; cursor:pointer; }
-  .thumb.on { border-color:var(--rust); }
   .card-body { padding:14px 16px 16px; display:flex; flex-direction:column; gap:6px; }
   .card-top { display:flex; justify-content:space-between; align-items:baseline; }
   .card-top h3 { margin:0; font-family:'Fraunces',serif; font-weight:600; font-size:18px; }
   .anio { color:var(--mute); font-size:13px; font-family:'Space Mono',monospace; }
   .version { color:var(--mute); font-size:12.5px; margin-top:-4px; }
-  .specs-grid { display:grid; grid-template-columns:1fr 1fr; gap:4px 10px; font-size:12px; color:var(--mute); margin:4px 0; padding:10px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
-  .specs-grid b { color:var(--ink); font-weight:600; }
-  .desc { font-size:12.5px; color:#59504a; margin:2px 0; line-height:1.45; }
+  .card-specs { display:flex; gap:6px; color:var(--mute); font-size:12.5px; flex-wrap:wrap; }
   .price-row { display:flex; align-items:center; justify-content:space-between; margin-top:6px; }
   .price-tag { position:relative; font-family:'Space Mono',monospace; font-weight:700; font-size:15.5px; background:var(--paper); border:1.5px solid var(--brass); border-radius:4px; padding:5px 12px 5px 18px; color:var(--rustDark); }
   .price-tag::before { content:''; position:absolute; left:6px; top:50%; transform:translateY(-50%); width:6px; height:6px; border-radius:50%; background:var(--paper); border:1.5px solid var(--brass); }
@@ -73,7 +68,37 @@
   .empty { color:var(--mute); padding:40px 0; text-align:center; }
   .footer { text-align:center; padding:24px; color:var(--mute); font-size:12px; }
 
-  @media (max-width:760px) { .catalogo { grid-template-columns:1fr; } .filtros { position:static; } }
+  /* Detalle del auto */
+  .detail-top { max-width:1200px; margin:0 auto; padding:18px 28px 0; }
+  .back-link { color:var(--mute); font-size:13px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; }
+  .back-link:hover { color:var(--rust); }
+  .detail { max-width:1200px; margin:0 auto; padding:16px 28px 60px; display:grid; grid-template-columns:1.1fr 1fr; gap:36px; }
+  .detail-photos .main-photo { width:100%; aspect-ratio:4/3; background-size:cover; background-position:center; border-radius:10px; border:1px solid var(--line); cursor:zoom-in; background-color:var(--line); position:relative; }
+  .detail-photos .main-photo .no-photo { position:absolute; inset:0; }
+  .detail-thumbs { display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
+  .detail-thumbs button { width:64px; height:48px; border-radius:6px; border:2px solid transparent; background-size:cover; background-position:center; padding:0; cursor:pointer; }
+  .detail-thumbs button.on { border-color:var(--rust); }
+
+  .detail-info h1 { font-family:'Fraunces',serif; font-weight:600; font-size:30px; margin:0 0 2px; }
+  .detail-info .sub { color:var(--mute); font-size:14px; margin:0 0 14px; }
+  .detail-tag { display:inline-block; font-size:11px; font-weight:700; padding:4px 10px; border-radius:4px; letter-spacing:0.6px; margin-bottom:14px; }
+  .detail-price { font-family:'Space Mono',monospace; font-weight:700; font-size:28px; color:var(--rustDark); margin:6px 0 18px; }
+  .spec-table { display:grid; grid-template-columns:1fr 1fr; gap:0; border:1px solid var(--line); border-radius:10px; overflow:hidden; margin-bottom:20px; }
+  .spec-item { padding:12px 16px; border-bottom:1px solid var(--line); border-right:1px solid var(--line); }
+  .spec-item:nth-child(2n) { border-right:none; }
+  .spec-item label { display:block; font-size:10.5px; text-transform:uppercase; letter-spacing:0.5px; color:var(--mute); margin-bottom:3px; }
+  .spec-item span { font-size:14px; font-weight:600; }
+  .detail-desc-title { font-size:12px; text-transform:uppercase; letter-spacing:0.7px; color:var(--rustDark); font-weight:700; margin:0 0 8px; }
+  .detail-desc { font-size:14.5px; line-height:1.7; color:#4a4139; white-space:pre-wrap; margin:0 0 22px; }
+
+  .lightbox { position:fixed; inset:0; background:rgba(20,15,12,0.92); display:flex; align-items:center; justify-content:center; z-index:100; cursor:zoom-out; padding:24px; }
+  .lightbox img { max-width:100%; max-height:100%; border-radius:6px; box-shadow:0 10px 40px rgba(0,0,0,0.4); }
+  .lightbox .close-x { position:absolute; top:20px; right:28px; color:#fff; font-size:32px; background:none; border:none; cursor:pointer; line-height:1; }
+
+  @media (max-width:760px) {
+    .catalogo { grid-template-columns:1fr; } .filtros { position:static; }
+    .detail { grid-template-columns:1fr; gap:22px; }
+  }
 </style>
 </head>
 <body>
@@ -139,46 +164,30 @@ function FilterCard({ title, children }) {
   );
 }
 
-function CarCard({ car, phone }) {
+function CarCard({ car, phone, onOpen }) {
   const fotos = car.fotos && car.fotos.length ? car.fotos : [];
-  const [active, setActive] = useState(0);
   const hasPhone = !!(phone && phone.trim());
   return (
-    <div className="card">
-      <div className="card-photo" style={{ backgroundImage: fotos[active] ? `url(${fotos[active]})` : "none" }}>
+    <div className="card" onClick={() => onOpen(car.id)}>
+      <div className="card-photo" style={{ backgroundImage: fotos[0] ? `url(${fotos[0]})` : "none" }}>
         <span className={"tag " + (car.condicion === "nuevo" ? "tag-new" : "tag-used")}>{car.condicion === "nuevo" ? "0KM" : "USADO"}</span>
         {!fotos.length && <div className="no-photo">Sin foto</div>}
       </div>
-      {fotos.length > 1 && (
-        <div className="thumbs">
-          {fotos.map((f, i) => <button key={i} className={i === active ? "thumb on" : "thumb"} style={{ backgroundImage: `url(${f})` }} onClick={() => setActive(i)} />)}
-        </div>
-      )}
       <div className="card-body">
         <div className="card-top"><h3>{car.marca} {car.modelo}</h3><span className="anio">{car.anio}</span></div>
         {car.version && <div className="version">{car.version}</div>}
-
-        <div className="specs-grid">
-          <span><b>{fmtKm(car.km)}</b></span>
-          <span><b>{car.transmision === "automatico" ? "Automático" : "Manual"}</b></span>
-          <span>{COMBUSTIBLE_LABEL[car.combustible] || car.combustible}</span>
-          <span>{CARROCERIA_LABEL[car.carroceria] || car.carroceria}</span>
+        <div className="card-specs">
+          <span>{fmtKm(car.km)}</span><span>·</span>
+          <span>{car.transmision === "automatico" ? "Automático" : "Manual"}</span><span>·</span>
           <span>{car.color}</span>
-          <span>{car.traccion === "4x4" ? "4x4 / AWD" : "4x2"}</span>
-          {car.motor && <span>Motor {car.motor}</span>}
-          {car.puertas && <span>{car.puertas} puertas</span>}
         </div>
-
-        {car.descripcion && <p className="desc">{car.descripcion}</p>}
-        <div className="price-row">
-          <div className="price-tag">{fmtMoney(car.precio)}</div>
-        </div>
+        <div className="price-row"><div className="price-tag">{fmtMoney(car.precio)}</div></div>
         <a
           className={"btn-whats" + (hasPhone ? "" : " disabled")}
           href={hasPhone ? buildWhatsappUrl(car, phone.trim()) : undefined}
           target="_blank" rel="noreferrer"
           title={hasPhone ? "" : "Todavía no se cargó el WhatsApp"}
-          onClick={(e) => { if (!hasPhone) e.preventDefault(); }}
+          onClick={(e) => { e.stopPropagation(); if (!hasPhone) e.preventDefault(); }}
         >
           <WhatsIcon /> Consultame
         </a>
@@ -187,16 +196,105 @@ function CarCard({ car, phone }) {
   );
 }
 
+function CarDetail({ car, phone, onBack }) {
+  const fotos = car.fotos && car.fotos.length ? car.fotos : [];
+  const [active, setActive] = useState(0);
+  const [zoom, setZoom] = useState(false);
+  const hasPhone = !!(phone && phone.trim());
+
+  useEffect(() => { window.scrollTo({ top: 0 }); }, []);
+
+  return (
+    <React.Fragment>
+      <div className="detail-top">
+        <a className="back-link" href="#/" onClick={onBack}>← Volver al catálogo</a>
+      </div>
+      <div className="detail">
+        <div className="detail-photos">
+          <div
+            className="main-photo"
+            style={{ backgroundImage: fotos[active] ? `url(${fotos[active]})` : "none" }}
+            onClick={() => fotos[active] && setZoom(true)}
+          >
+            {!fotos.length && <div className="no-photo">Sin foto</div>}
+          </div>
+          {fotos.length > 1 && (
+            <div className="detail-thumbs">
+              {fotos.map((f, i) => (
+                <button key={i} className={i === active ? "on" : ""} style={{ backgroundImage: `url(${f})` }} onClick={() => setActive(i)} />
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="detail-info">
+          <span className={"detail-tag " + (car.condicion === "nuevo" ? "tag-new" : "tag-used")} style={{ background: car.condicion === "nuevo" ? "var(--brass)" : "var(--ink)", color: "#fff" }}>
+            {car.condicion === "nuevo" ? "0KM" : "USADO"}
+          </span>
+          <h1>{car.marca} {car.modelo}</h1>
+          <p className="sub">{car.version ? car.version + " · " : ""}{car.anio}</p>
+          <div className="detail-price">{fmtMoney(car.precio)}</div>
+
+          <div className="spec-table">
+            <div className="spec-item"><label>Kilómetros</label><span>{fmtKm(car.km)}</span></div>
+            <div className="spec-item"><label>Transmisión</label><span>{car.transmision === "automatico" ? "Automático" : "Manual"}</span></div>
+            <div className="spec-item"><label>Combustible</label><span>{COMBUSTIBLE_LABEL[car.combustible] || car.combustible || "—"}</span></div>
+            <div className="spec-item"><label>Carrocería</label><span>{CARROCERIA_LABEL[car.carroceria] || car.carroceria || "—"}</span></div>
+            <div className="spec-item"><label>Color</label><span>{car.color || "—"}</span></div>
+            <div className="spec-item"><label>Tracción</label><span>{car.traccion === "4x4" ? "4x4 / AWD" : "4x2"}</span></div>
+            <div className="spec-item"><label>Puertas</label><span>{car.puertas || "—"}</span></div>
+            <div className="spec-item"><label>Motor</label><span>{car.motor || "—"}</span></div>
+          </div>
+
+          {car.descripcion && (
+            <React.Fragment>
+              <p className="detail-desc-title">Descripción</p>
+              <p className="detail-desc">{car.descripcion}</p>
+            </React.Fragment>
+          )}
+
+          <a
+            className={"btn-whats" + (hasPhone ? "" : " disabled")}
+            href={hasPhone ? buildWhatsappUrl(car, phone.trim()) : undefined}
+            target="_blank" rel="noreferrer"
+            title={hasPhone ? "" : "Todavía no se cargó el WhatsApp"}
+            onClick={(e) => { if (!hasPhone) e.preventDefault(); }}
+            style={{ maxWidth: 260 }}
+          >
+            <WhatsIcon /> Consultame por este auto
+          </a>
+        </div>
+      </div>
+
+      {zoom && fotos[active] && (
+        <div className="lightbox" onClick={() => setZoom(false)}>
+          <button className="close-x" onClick={() => setZoom(false)}>×</button>
+          <img src={fotos[active]} alt="" />
+        </div>
+      )}
+    </React.Fragment>
+  );
+}
+
+function useHashRoute() {
+  const [hash, setHash] = useState(window.location.hash);
+  useEffect(() => {
+    const f = () => setHash(window.location.hash);
+    window.addEventListener("hashchange", f);
+    return () => window.removeEventListener("hashchange", f);
+  }, []);
+  return hash;
+}
+
 function App() {
   const [cars, setCars] = useState([]);
   const [whatsapp, setWhatsapp] = useState("");
   const [loading, setLoading] = useState(true);
   const [condicion, setCondicion] = useState("todos");
   const [transmision, setTransmision] = useState("todos");
-  const [combustible, setCombustible] = useState("todos");
-  const [carroceria, setCarroceria] = useState("todos");
   const [km, setKm] = useState([0, 350000]);
   const [precio, setPrecio] = useState([0, 50000]);
+  const hash = useHashRoute();
 
   useEffect(() => {
     (async () => {
@@ -211,93 +309,76 @@ function App() {
   const filtrados = useMemo(() => cars.filter(c =>
     (condicion === "todos" || c.condicion === condicion) &&
     (transmision === "todos" || c.transmision === transmision) &&
-    (combustible === "todos" || c.combustible === combustible) &&
-    (carroceria === "todos" || c.carroceria === carroceria) &&
     c.km >= km[0] && c.km <= km[1] &&
     c.precio >= precio[0] && c.precio <= precio[1]
-  ), [cars, condicion, transmision, combustible, carroceria, km, precio]);
+  ), [cars, condicion, transmision, km, precio]);
 
   function clearFilters() {
-    setCondicion("todos"); setTransmision("todos"); setCombustible("todos"); setCarroceria("todos");
-    setKm([0, 350000]); setPrecio([0, 50000]);
+    setCondicion("todos"); setTransmision("todos"); setKm([0, 350000]); setPrecio([0, 50000]);
   }
 
-  const carroceriasEnUso = useMemo(() => {
-    const set = new Set(cars.map(c => c.carroceria).filter(Boolean));
-    return Array.from(set);
-  }, [cars]);
+  function openCar(id) { window.location.hash = "#/auto/" + id; }
+
+  const detailMatch = hash.match(/^#\/auto\/(.+)$/);
+  const carDetail = detailMatch ? cars.find(c => String(c.id) === detailMatch[1]) : null;
 
   return (
     <React.Fragment>
-      <div className="navbar"><div className="logo">Cohen <span>Autos</span></div></div>
-      <div className="hero">
-        <h1>Encontrá tu próximo auto</h1>
-        <p>Autos nuevos y usados, revisados y listos para entregar.</p>
-      </div>
+      <div className="navbar"><a className="logo" href="#/">Cohen <span>Autos</span></a></div>
 
-      <div className="catalogo">
-        <aside className="filtros">
-          <FilterCard title="Condición">
-            <div className="chips">
-              {["todos", "nuevo", "usado"].map(v => (
-                <button key={v} className={condicion === v ? "chip on" : "chip"} onClick={() => setCondicion(v)}>
-                  {v === "todos" ? "Todos" : v === "nuevo" ? "0km" : "Usado"}
-                </button>
-              ))}
-            </div>
-          </FilterCard>
+      {carDetail ? (
+        <CarDetail car={carDetail} phone={whatsapp} onBack={() => {}} />
+      ) : (
+        <React.Fragment>
+          <div className="hero">
+            <h1>Encontrá tu próximo auto</h1>
+            <p>Autos nuevos y usados, revisados y listos para entregar.</p>
+          </div>
+          <div className="catalogo">
+            <aside className="filtros">
+              <FilterCard title="Condición">
+                <div className="chips">
+                  {["todos", "nuevo", "usado"].map(v => (
+                    <button key={v} className={condicion === v ? "chip on" : "chip"} onClick={() => setCondicion(v)}>
+                      {v === "todos" ? "Todos" : v === "nuevo" ? "0km" : "Usado"}
+                    </button>
+                  ))}
+                </div>
+              </FilterCard>
 
-          <FilterCard title="Transmisión">
-            <div className="chips">
-              {["todos", "manual", "automatico"].map(v => (
-                <button key={v} className={transmision === v ? "chip on" : "chip"} onClick={() => setTransmision(v)}>
-                  {v === "todos" ? "Todas" : v === "manual" ? "Manual" : "Automático"}
-                </button>
-              ))}
-            </div>
-          </FilterCard>
+              <FilterCard title="Transmisión">
+                <div className="chips">
+                  {["todos", "manual", "automatico"].map(v => (
+                    <button key={v} className={transmision === v ? "chip on" : "chip"} onClick={() => setTransmision(v)}>
+                      {v === "todos" ? "Todas" : v === "manual" ? "Manual" : "Automático"}
+                    </button>
+                  ))}
+                </div>
+              </FilterCard>
 
-          <FilterCard title="Combustible">
-            <div className="chips">
-              <button className={combustible === "todos" ? "chip on" : "chip"} onClick={() => setCombustible("todos")}>Todos</button>
-              {Object.entries(COMBUSTIBLE_LABEL).map(([v, l]) => (
-                <button key={v} className={combustible === v ? "chip on" : "chip"} onClick={() => setCombustible(v)}>{l}</button>
-              ))}
-            </div>
-          </FilterCard>
+              <FilterCard title="Kilómetros">
+                <RangeDual min={0} max={350000} step={5000} value={km} onChange={setKm} format={fmtKm} />
+              </FilterCard>
 
-          {carroceriasEnUso.length > 0 && (
-            <FilterCard title="Carrocería">
-              <div className="chips">
-                <button className={carroceria === "todos" ? "chip on" : "chip"} onClick={() => setCarroceria("todos")}>Todas</button>
-                {carroceriasEnUso.map(v => (
-                  <button key={v} className={carroceria === v ? "chip on" : "chip"} onClick={() => setCarroceria(v)}>{CARROCERIA_LABEL[v] || v}</button>
-                ))}
-              </div>
-            </FilterCard>
-          )}
+              <FilterCard title="Precio">
+                <RangeDual min={0} max={50000} step={500} value={precio} onChange={setPrecio} format={fmtMoney} />
+              </FilterCard>
 
-          <FilterCard title="Kilómetros">
-            <RangeDual min={0} max={350000} step={5000} value={km} onChange={setKm} format={fmtKm} />
-          </FilterCard>
-
-          <FilterCard title="Precio">
-            <RangeDual min={0} max={50000} step={500} value={precio} onChange={setPrecio} format={fmtMoney} />
-          </FilterCard>
-
-          <button className="clear-filters" onClick={clearFilters}>Limpiar todos los filtros</button>
-        </aside>
-        <section className="grid">
-          {loading ? <div className="empty">Cargando autos...</div> : (
-            <React.Fragment>
-              <div className="grid-head">{filtrados.length} {filtrados.length === 1 ? "auto encontrado" : "autos encontrados"}</div>
-              {filtrados.length === 0
-                ? <div className="empty">No hay autos que coincidan con esos filtros. Probá abrir un poco el rango.</div>
-                : <div className="cards">{filtrados.map(c => <CarCard key={c.id} car={c} phone={whatsapp} />)}</div>}
-            </React.Fragment>
-          )}
-        </section>
-      </div>
+              <button className="clear-filters" onClick={clearFilters}>Limpiar todos los filtros</button>
+            </aside>
+            <section className="grid">
+              {loading ? <div className="empty">Cargando autos...</div> : (
+                <React.Fragment>
+                  <div className="grid-head">{filtrados.length} {filtrados.length === 1 ? "auto encontrado" : "autos encontrados"}</div>
+                  {filtrados.length === 0
+                    ? <div className="empty">No hay autos que coincidan con esos filtros. Probá abrir un poco el rango.</div>
+                    : <div className="cards">{filtrados.map(c => <CarCard key={c.id} car={c} phone={whatsapp} onOpen={openCar} />)}</div>}
+                </React.Fragment>
+              )}
+            </section>
+          </div>
+        </React.Fragment>
+      )}
       <footer className="footer">Cohen Autos</footer>
     </React.Fragment>
   );
